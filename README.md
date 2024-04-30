@@ -8,6 +8,8 @@ for a streamlined experience
 
 ## Install
 
-[Install Gum](https://github.com/charmbracelet/gum?tab=readme-ov-file#installation)
+1. [Install Gum](https://github.com/charmbracelet/gum?tab=readme-ov-file#installation)
 
-Run the setup script setup.sh
+2. Run [setup.sh](setup.sh)
+
+##
