@@ -17,7 +17,9 @@ gum_print "* gum installation was found!"
 # Create config directory & config
 CONFIG_DIR="$HOME/.config/timesheet"
 mkdir -p $CONFIG_DIR
-cp .config "$CONFIG_DIR/.config"
+cp .config.sh "$CONFIG_DIR/.config.sh"
+cp .timesheet "$CONFIG_DIR/.timesheet"
+gum_print "* Copied .config and .timesheet to $CONFIG_DIR"
 
 # Add project list (ex. Epics in an Agile Sprint)
 gum_print "* Enter your list of projects (CTRL + d to Save)"
