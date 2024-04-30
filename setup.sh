@@ -6,25 +6,18 @@ if ! command -v gum &> /dev/null
 then
     echo "gum was not found - check your installation"
     exit 1
-else
-	gum style --foreground 212 'gum was found!'
 fi
-
-function cleanup {
-	echo "All done!"
-}
-trap finish EXIT
 
 function gum_print() {
 	gum style --foreground 212 "$1" 1>&2
 }
 
-# Create config directory
+gum_print "* gum installation was found!"
+
+# Create config directory & config
 CONFIG_DIR="$HOME/.config/timesheet"
 mkdir -p $CONFIG_DIR
-
-CONFIG="$CONFIG_DIR/.config"
-cp .config $CONFIG
+cp .config "$CONFIG_DIR/.config"
 
 # Add project list (ex. Epics in an Agile Sprint)
 gum_print "* Enter your list of projects (CTRL + d to Save)"
@@ -38,3 +31,5 @@ do
 	FILE=$(gum file --all $CONFIG_DIR)
 	$EDITOR $FILE
 done
+
+gum_print "* Setup done!"
