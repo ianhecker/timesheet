@@ -3,14 +3,18 @@
 set -e
 
 CONFIG_DIR="$HOME/.config/timesheet"
-CONFIG="$CONFIG_DIR/.config"
+CONFIG="$CONFIG_DIR/.config.sh"
 
 if ! test -f "$CONFIG"; then
   echo "Could not find $CONFIG"
   exit 1
 fi
 
+# Explicitly declare variables from the config
 source $CONFIG
+MILITARY_TIMES=$MILITARY_TIMES
+OUTPUT_FILE=$OUTPUT_FILE
+PROJECT_CONFIG=$PROJECT_CONFIG
 
 if ! test -f "$PROJECT_CONFIG"
 then
@@ -19,10 +23,6 @@ then
 fi
 
 MONTHS=("January" "February" "March" "April" "May" "June" "July" "August" "September" "October" "November" "December")
-
-# If more times are desired, edit the right brace expansion
-# MILITARY_TIMES=$(echo -e {00..23}:{00,.59})
-MILITARY_TIMES=$(echo -e {00..23}:{00,15,30,45})
 
 function days_in_month() {
 	MONTH=$1
@@ -33,8 +33,7 @@ function days_in_month() {
 
 function get_day() {
 	DAYS_IN_MONTH=$1
-
-	DAYS=$(for i in `seq 1 $DAYS_IN_MONTH`; do echo $i; done)
+	DAYS=$(seq 1 $DAYS_IN_MONTH)
 
 	TODAY=$(date +%d)
 	gum filter --indicator ">" --height 10 --placeholder "today is $TODAY" $DAYS
@@ -94,9 +93,9 @@ prompt "Enter Stop Time (military time)"
 STOP="$(get_military_time):00"
 gum_print "* from $START until $STOP"
 
-prompt "Select Task"
-TASK=$(get_project)
-gum_print "* $TASK"
+prompt "Select Project"
+PROJECT=$(get_project)
+gum_print "* $PROJECT"
 
 prompt "Enter Details"
 DETAILS=$(get_details)
@@ -105,7 +104,7 @@ gum_print "* $DETAILS"
 ISO_8601_START=$(date +"${YEAR}-${MONTH_INT}-${DAY}T${START}%:z")
 ISO_8601_STOP=$(date +"${YEAR}-${MONTH_INT}-${DAY}T${STOP}%:z")
 
-ENTRY="$ISO_8601_START,$ISO_8601_STOP,$TASK,\"$DETAILS\""
+ENTRY="$ISO_8601_START,$ISO_8601_STOP,$PROJECT,\"$DETAILS\""
 HASH=$(echo $ENTRY | sha256sum | cut -d" " -f1)
 
 gum_print "* $HASH,$ENTRY"
