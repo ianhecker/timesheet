@@ -104,8 +104,8 @@ gum_print "* $DETAILS"
 ISO_8601_START=$(date +"${YEAR}-${MONTH_INT}-${DAY}T${START}%:z")
 ISO_8601_STOP=$(date +"${YEAR}-${MONTH_INT}-${DAY}T${STOP}%:z")
 
-ENTRY="$ISO_8601_START,$ISO_8601_STOP,$PROJECT,\"$DETAILS\""
 HASH=$(echo $ENTRY | sha256sum | cut -d" " -f1)
+ENTRY="$HASH,$ISO_8601_START,$ISO_8601_STOP,$PROJECT,\"$DETAILS\""
 
-gum_print "* $HASH,$ENTRY"
-echo "$HASH,$ENTRY" >> $OUTPUT_FILE
+gum_print "* $ENTRY"
+echo "$ENTRY" >> $OUTPUT_FILE
